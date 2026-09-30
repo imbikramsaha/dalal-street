@@ -7,5 +7,5 @@ export const repo = {
 
 export const idleLockMinutes = 15
 export const refreshMinutes = 30
-export const topCompanies = 20
+export const topCompanies = 25
 export const maxSipInstalments = 600
