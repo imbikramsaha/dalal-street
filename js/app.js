@@ -379,11 +379,14 @@ function renderBreakdown(p) {
   if (!bd?.leaders.length) {
     breakdownCache = null
     $('#breakdown-date').textContent = ''
+    $('#breakdown-sub').textContent = "Your fund money split by each fund's holdings."
     el.innerHTML = `<p class="bd-empty muted">${
       state.loading || !ready ? 'Loading fund holdings…' : state.holdingsError ? "Couldn't load fund holdings. Refresh to try again." : 'None of your funds has holdings data yet.'
     }</p>`
     return
   }
+  const covered = 100 - bd.others.share
+  $('#breakdown-sub').textContent = `Your top ${bd.leaders.length} companies hold ${covered.toFixed(1)}% of your fund money. The rest is under Others.`
   $('#breakdown-date').textContent = bd.from ? `Holdings as of ${dateLabel(bd.from)}${bd.to && bd.to !== bd.from ? ` to ${dateLabel(bd.to)}` : ''}` : ''
   const max = Math.max(...bd.leaders.map(c => c.amount))
   const width = amount => `${max ? Math.max(0.6, (amount / max) * 100) : 0}%`
@@ -409,7 +412,7 @@ function renderBreakdown(p) {
   el.innerHTML = `<ol class="bd-list">${rows}
     <li class="bd-row bd-others">
       <div class="bd-main">
-        <span class="bd-rank">11</span>
+        <span class="bd-rank">${bd.leaders.length + 1}</span>
         <span class="bd-name"><span class="co-name">Others</span><span class="co-meta">${esc(otherNote.join(' · '))}</span></span>
         <span class="bd-bar" aria-hidden="true"></span>
         <span class="bd-amount">${money(o.amount)}</span>
